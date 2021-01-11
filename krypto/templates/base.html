@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRYPTO - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/styles.css"></link>
+</head>
+<body>
+    <header>
+        <p>Krypto Exchange</p>
+    </header>
+
+    <h2><a href='/'> Start</a></h2>    
+    <h2><a href='purchase'> Purchase</a></h2>
+    <h2><a href='status'> Status</a></h2>
+
+    <section class = "main">
+        {% block content%} {% endblock %}
+    </section>
+
+    <footer>
+        &copy; 2021 - All rights reserved.
+    </footer>
+    
+</body>
+</html>
