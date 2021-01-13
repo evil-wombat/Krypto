@@ -8,13 +8,24 @@
             <tr>
                 <th>Date</th>
                 <th>Time</th>
-                <th>From</th>
-                <th>Quantity</th>
-                <th>To</th>
-                <th>Quantity</th>
+                <th>From_Currency</th>
+                <th>From_Quantity</th>
+                <th>To_Currency</th>
+                <th>To_Quantity</th>
                 <th>P.U.</th>
-            </tr> 
-
+            </tr>
+        {% for registro in datos %}
+            <tr>
+                <td> {{ registro [0] }} </td>
+                <td> {{ registro [1] }} </td>
+                <td> {{ registro [2] }} </td>
+                <td> {{ registro [3] }} </td>
+                <td> {{ registro [4] }} </td>
+                <td> {{ registro [5] }} </td>
+                <td> {{ (registro [3] / registro [5]) | round(2, 'ceil') }} </td>
+                
+            </tr>
+        {% endfor %}
         </table>
     
     {% endblock %}

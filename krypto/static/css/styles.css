@@ -12,8 +12,21 @@ table {
     width: 70%;
 }
 
-h2 {margin-right: 50%;}
+h3 {display: inline;
+    }
+
 
 .field {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     background-color: darkcyan;}
+
+.Q {display: inline;}
+
+.Entry {
+    width: 50%;
+    float: left;
+}
+
+.submit {
+    display: inline;
+}
