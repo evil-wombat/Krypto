@@ -8,71 +8,45 @@
 <br>
 <form action = 'purchase' method = 'POST'>
     <div class= 'Entry'>
-        <div class = 'From'>
-        <label for='Coins'>From</label>
-            <select name='Coins_from' style= 'width: 125px'>
-                <option value="EUR">EUR</option>
-                <option value="BTC">BTC</option>
-                <option value="ETH">ETH</option>
-                <option value="USDT">USDT</option>
-                <option value="DOT">DOT</option>
-                <option value="XRP">XRP</option>
-                <option value="ADA">ADA</option>
-                <option value="LTC">LTC</option>
-                <option value="BCH">BCH</option>
-                <option value="LINK">LINK</option>
-                <option value="XLM">XLM</option>
-                <option value="BNB">BNB</option>
-                <option value="USDC">USDC</option>
-            </select>
+        <div class = 'From' style="width: 125 px;">
+        {{ form.Coins_from.label }}
+        {{ form.Coins_from }}
         </div>
         <br>
         <br>
         <div class = 'Quantity'>
-            <label for='Q'>Q: </label>
-            <input type='number' name='Q_from', step="0.01">
+            {{ form.Q_from.label}}
+            {{ form.Q_from }}
+            <input type="submit" class= 'submit' name='submit' value='Convert'>
         </div>
     </div>
 
     <div class = 'Entry'>
         <div class = 'To'>
-            <label for='Coins'>To</label>
-                <select name='Coins_to' style= 'width: 125px'>
-                    <option value="EUR">EUR</option>
-                    <option value="BTC">BTC</option>
-                    <option value="ETH">ETH</option>
-                    <option value="USDT">USDT</option>
-                    <option value="DOT">DOT</option>
-                    <option value="XRP">XRP</option>
-                    <option value="ADA">ADA</option>
-                    <option value="LTC">LTC</option>
-                    <option value="BCH">BCH</option>
-                    <option value="LINK">LINK</option>
-                    <option value="XLM">XLM</option>
-                    <option value="BNB">BNB</option>
-                    <option value="USDC">USDC</option>
-                </select>
+            {{ form.Coins_to.label }}
+            {{ form.Coins_to }}
         </div>
         <br>
         <br>
         <div class = 'To'>
-            <label type = 'text'  for='Q'>Q: </label>
-            <input type="number" name='Q_to' step="0.01">
+            {{ form.Q_to.label}}
+            {{ form.Q_to(value=Q2) }}
+            
+            
         </div>
         <br>
         <br>
         <div class = 'To'>
-            <label for = 'PU'>P.U.:</label>
-            <input type ="text" name='PU'>
+            {{ form.PU.label }}
+            {{ form.PU(value=PU) }}
         </div>
         <br>
         <br>
         <div class='submit'>
             <div class='submit'>
-                <input type = 'submit' value=&#10003;>
-            </div>
-            <div class='submit'>
-                <input type = 'submit' value=&#10005;>
+                <div class='submit'>
+                    <input type = 'submit', name='submit' value='Acept'>
+                </div>
             </div>
         </div>
     </div>
