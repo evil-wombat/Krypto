@@ -4,10 +4,18 @@
 
 {% block content %}
     <h1>Investment State</h1>
-
-    <div class = 'invested'>Invested: {{ total }}€ </div>
-    <br>
-    <div class = 'Revenue'>Revenue: {{ revenue }} </div>
-    <br>
+    {% for message in messages %}
+        <p class="err-msg">{{ message }}</p>
+    {% endfor %}
+    <table>
+        <tr>
+            <td class = 'invested'>Invested: {{ total }}€ </td>
+        </tr>
+        <tr>
+            <td class = 'Revenue'>Actual value: {{ actual_value }}€  </td>
+        </tr>
+        {% for message in messages %}
+            <p class='err-state'>{{ message }}</p>
+    </table>
 
 {% endblock %}

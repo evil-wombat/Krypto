@@ -4,3 +4,4 @@ venv/
 .DS_Store
 krypto/.DS_Store
 config.py
+.vscode

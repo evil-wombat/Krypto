@@ -16,15 +16,9 @@ def convert (Q1, C1, C2):
 
     if respuesta.status_code == 200:
         data = respuesta.json()
-    else:
-        print ('Se ha producido un error', respuesta.status)
 
     Q2 = Q1 * (data ['data']['quote'][C2]['price'])
 
     return Q2
 
-  else:
-
-    Q2 = 'You can not convert the same coin'
-    return Q2
 

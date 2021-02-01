@@ -1,98 +1,121 @@
 from krypto import app
 from flask import render_template, request, url_for, redirect
 import sqlite3
-from datetime import date, datetime
 from krypto.forms import Forms
 from krypto import API
-
+from krypto import funciones
 
 DBFILE = app.config ['DBFILE']
 
 @app.route('/')
 def movements_table ():
-    
-    conn = sqlite3.connect (DBFILE)
-    c = conn.cursor()
 
-    c.execute ('SELECT date, time, from_currency, from_quantity, to_currency, to_quantity FROM movements;')
-    
-    movements = c.fetchall()
+    messages = []
 
-    conn.close()
+    try:    
+        movements = funciones.consulta ('SELECT date, time, from_currency, from_quantity, to_currency, to_quantity FROM movements;')
+    except Exception as e:
+        print("**ERROR**🔧: Incorrect Database acces. {} - {}". format(type(e).__name__, e))
+        messages.append("There was an error trying to access the database")
+
+        return render_template ('movement_table.html', datos=[], messages = messages)
     
-    return render_template ('movement_table.html', datos=movements)
+    return render_template ('movement_table.html', datos=movements, messages = messages)
 
 @app.route ('/purchase', methods = ['GET', 'POST'])
 def purchase ():
 
     form = Forms ()
+    messages = []
+
+    try:
+        form.Coins_from.choices = funciones.coins ()
+    except Exception as e:
+        print("**ERROR**🔧: Incorrect Database acces. {} - {}". format(type(e).__name__, e))
+        messages.append("Database error.")
+        return render_template ('purchase.html', form = form, fix = True, messages = messages)
 
     if request.method == 'POST':
 
-        if request.form.get ('submit') == 'Acept':
+        if form.validate ():
 
-            Q2 = API.convert (float (request.form.get('Q_from')), request.form.get('Coins_from'), request.form.get('Coins_to'))
+            if form.convert.data:
+
+                try:
+                    coin_dic = funciones.suma ()
+                except Exception as e:
+                    print("**ERROR**🔧: Incorrect Database acces. {} - {}". format(type(e).__name__, e))
+                    messages.append("Database error.")
+
+                    return render_template ('purchase.html', form = form, fix = True, messages = messages)
+
+                if form.Coins_from.data == 'EUR' or form.Q_from.data < coin_dic [form.Coins_from.data]:
+
+                    try:
+                        form.Q_to.data = API.convert (float (form.Q_from.data), form.Coins_from.data, form.Coins_to.data)
+                    except Exception as e:
+                        print("**ERROR**🔧: Incorrect API access. {} - {}". format(type(e).__name__, e))
+                        messages.append("API_KEY error")
+
+                        return render_template ('purchase.html', form = form, fix = True, messages = messages)
+                    
+                    form.PU.data = float (form.Q_from.data) / form.Q_to.data
+
+                    form.Q_to_oculto.data = form.Q_to.data
+                    form.PU_oculto.data = form.PU.data
+                    form.C_from_oculto.data = form.Coins_from.data  
+                    form.C_to_oculto.data = form.Coins_to.data 
+                    form.Q_from_oculto.data = form.Q_from.data 
+                    
+                    return render_template ('purchase.html', form = form, fix = True, messages = messages)
+
+                else:
+                    
+                    return render_template ('purchase.html', form = form)                    
+          
+            elif form.accept.data: 
+
+                try:
+                    funciones.consulta ('INSERT INTO movements (date, time, from_currency, from_quantity, to_currency, to_quantity) VALUES (?, ?, ?, ?, ?, ?);', 
+                        (
+                            funciones.today (), funciones.time (),
+                            form.C_from_oculto.data,
+                            form.Q_from_oculto.data,
+                            form.C_to_oculto.data,
+                            form.Q_to_oculto.data
+                        )
+                    )
+                except Exception as e:
+                    print("**ERROR**🔧: Incorrect Database acces. {} - {}". format(type(e).__name__, e))
+                    messages.append("There was an error trying to access the database")
+
+                    return render_template ('purchase.html', form = form, fix = True, messages = messages)
             
-            today = date.today ()
-            today = today.strftime ("%Y-%m-%d")
-
-            time = datetime.now ()
-            time = time.strftime ("%H:%M:%S")
-
-            conn = sqlite3.connect (DBFILE)
-            c = conn.cursor()
-
-            c.execute ('INSERT INTO movements (date, time, from_currency, from_quantity, to_currency, to_quantity) VALUES (?, ?, ?, ?, ?, ?);', 
-                (
-                    today,
-                    time,
-                    request.form.get('Coins_from'),
-                    request.form.get('Q_from'),
-                    request.form.get('Coins_to'),
-                    round (Q2, 8)
-                )
-            )
-
-            conn.commit ()
-            conn.close ()
+                return redirect (url_for('movements_table'))
         
-            return redirect (url_for('movements_table'))
-        
-        elif request.form.get ('submit') == 'Convert':
+        return render_template ('purchase.html', form = form, messages=messages)
 
-            Q2 = API.convert (float (request.form.get('Q_from')), request.form.get('Coins_from'), request.form.get('Coins_to'))
-            PU = float (request.form.get('Q_from')) / Q2
-
-
-            return render_template ('purchase.html', form = form, PU = PU, Q2=Q2)
-            
-            
-        
-
-    
     return render_template ('purchase.html', form = form)
 
 
 @app.route ('/status')
 def status ():
+    messages = []
 
-    conn = sqlite3.connect (DBFILE)
-    c = conn.cursor()
+    try:
+        invested = funciones.invested()
+    except Exception as e:
+        print("**ERROR**🔧: Incorrect Database acces. {} - {}". format(type(e).__name__, e))
+        messages.append("There was an error trying to access the database")
+        return render_template ('status.html', total = invested, actual_value = actual_value, messages = messages)
 
-    c.execute ('SELECT date, time, from_currency, from_quantity, to_currency, to_quantity FROM movements;')
+    try:
+        actual_value = funciones.actual_value ()
+    except Exception as e:
+        print("**ERROR**🔧: Incorrect Database acces. {} - {}". format(type(e).__name__, e))
+        messages.append("Database error.")
+        return render_template ('status.html', total = invested, actual_value = actual_value, messages = messages)
+
+    return render_template ('status.html', total = invested, actual_value = actual_value, messages = messages)
+
     
-    movements = c.fetchall()
-
-    conn.close()
-
-    invested = 0
-    for cantidad in movements:
-        invested += cantidad [3]
-
-    revenue = 0
-    for cantidad in movements:
-        Q = API.convert (cantidad [5], cantidad [4], 'EUR')
-        revenue += Q
-
-
-    return render_template ('status.html', total = invested, revenue = revenue)

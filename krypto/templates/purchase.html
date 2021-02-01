@@ -7,50 +7,90 @@
 <h2>Coin Purchase</h2>
 <br>
 <form action = 'purchase' method = 'POST'>
-    <div class= 'Entry'>
-        <div class = 'From' style="width: 125 px;">
-        {{ form.Coins_from.label }}
-        {{ form.Coins_from }}
+    {{ form.hidden_tag() }}
+    <div class = 'grid-container'>
+        <div class = 'Coins_from' style="width: 40%;">
+            {{ form.Coins_from.label }}
+            {{ form.Coins_from }}
         </div>
-        <br>
-        <br>
-        <div class = 'Quantity'>
+        <div class = 'Q_from'>
             {{ form.Q_from.label}}
             {{ form.Q_from }}
-            <input type="submit" class= 'submit' name='submit' value='Convert'>
+            {% for error in form.Q_from.errors %}
+                <p class="err-msg">{{ error }}</p>
+            {% endfor %}
+            {% for message in messages %}
+                <p class="err-msg-purchase">{{ message }}</p>
+            {% endfor %}
+            {% if fix == True %}
+                {{ form.convert (disabled=True)}}
+            {% else %}
+                {{ form.convert }}
+            {% endif %} 
         </div>
-    </div>
-
-    <div class = 'Entry'>
-        <div class = 'To'>
+        <div class = 'Coins_to' style="width: 60%;">
             {{ form.Coins_to.label }}
             {{ form.Coins_to }}
         </div>
-        <br>
-        <br>
-        <div class = 'To'>
-            {{ form.Q_to.label}}
-            {{ form.Q_to(value=Q2) }}
-            
-            
-        </div>
-        <br>
-        <br>
-        <div class = 'To'>
-            {{ form.PU.label }}
-            {{ form.PU(value=PU) }}
-        </div>
-        <br>
-        <br>
-        <div class='submit'>
-            <div class='submit'>
-                <div class='submit'>
-                    <input type = 'submit', name='submit' value='Acept'>
-                </div>
+        {% if fix == True %}
+            <div class = 'Q_to'>
+                {{ form.Q_to.label }}
+                {{ form.Q_to (value = form.Q_to_oculto.data) }}
+            </div> 
+        {% else %}
+            <div class = 'Q_to'>
+                {{ form.Q_to.label }}
+                {{ form.Q_to(disabled=True) }} 
             </div>
-        </div>
-    </div>
+        {% endif %}
 
+        {% if fix == True %}
+            <div class = 'PU'>
+                {{ form.PU.label }}
+                {{ form.Q_to (value = form.PU_oculto.data) }}
+            </div>
+        {% else %}
+            <div class = 'PU'>
+                {{ form.PU.label }}
+                {{ form.PU(disabled = True) }}
+            </div>         
+        {% endif %}
+
+        {% if fix == True %}
+            <div class='submit'>
+                {{ form.accept }}
+            </div>
+        {% else %}
+            <div class='submit'>
+                {{ form.accept (disabled=True)}}
+            </div>
+        {% endif %}
+    </div>
 </form>
-        
+
+{% if fix == True %}
+<div class='box'>Click 'Accept' to invest the following:</div>
+<table>
+    <tr>
+        <th>From_Currency</th>
+        <th>To_Currency</th>
+        <th>From_Quantity</th>
+        <th>To_Quantity</th>
+        <th>P.U.</th>
+    </tr>
+    <tr>
+        <td>{{ form.C_from_oculto.data }}</td>
+        <td>{{ form.C_to_oculto.data }}</td>
+        <td>{{ form.Q_from_oculto.data }}</td>
+        <td>{{ form.Q_to_oculto.data }}</td>
+        <td>{{ form.PU_oculto.data }}</td>
+    </tr>
+</table>
+{% endif %}
+
 {% endblock %}
+
+
+
+
+
