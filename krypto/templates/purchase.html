@@ -19,14 +19,11 @@
             {% for error in form.Q_from.errors %}
                 <p class="err-msg">{{ error }}</p>
             {% endfor %}
+            {{ form.convert }}
             {% for message in messages %}
                 <p class="err-msg-purchase">{{ message }}</p>
             {% endfor %}
-            {% if fix == True %}
-                {{ form.convert (disabled=True)}}
-            {% else %}
-                {{ form.convert }}
-            {% endif %} 
+            
         </div>
         <div class = 'Coins_to' style="width: 60%;">
             {{ form.Coins_to.label }}

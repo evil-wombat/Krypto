@@ -2,6 +2,7 @@ from krypto import app
 from datetime import date, datetime
 import sqlite3
 from krypto import API
+from collections import Counter
 
 def today ():
     today = date.today ()
@@ -55,7 +56,7 @@ def coins ():
 
     return dynamic_coins
             
-def suma ():
+def diccionario_coins_to ():
     
     DBFILE = app.config ['DBFILE']
 
@@ -69,13 +70,13 @@ def suma ():
 
     conn.close()
 
-    coin_value = {}
+    coins_to= {}
     for key, value in monedas:
-        coin_value[key] = coin_value.get(key, 0) + value
+        coins_to[key] = coins_to.get(key, 0) + value
 
-    return coin_value
+    return coins_to
 
-def resta ():
+def diccionario_coins_from():
 
     DBFILE = app.config ['DBFILE']
 
@@ -89,11 +90,25 @@ def resta ():
 
     conn.close()
 
-    coin_value = {}
+    coins_from = {}
     for key, value in monedas:
-        coin_value[key] = coin_value.get(key, 0) + value
+        coins_from[key] = coins_from.get(key, 0) + value
 
-    return coin_value
+    return coins_from
+
+def total_coins_invested ():
+    
+    coins_to = diccionario_coins_to ()
+    coins_from = diccionario_coins_from ()
+    
+    total = {'EUR': 0}
+
+    for k, v in coins_to.items():
+
+        total[k] = v - coins_from.get(k, 0)
+
+    return total
+
 
 def invested ():
 

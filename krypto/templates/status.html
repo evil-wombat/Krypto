@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 
 {% block title %} Status {% endblock %}
-
+    
 {% block content %}
     <h1>Investment State</h1>
-    {% for message in messages %}
-        <p class="err-msg">{{ message }}</p>
-    {% endfor %}
+    
     <table>
         <tr>
             <td class = 'invested'>Invested: {{ total }}€ </td>
@@ -14,8 +12,10 @@
         <tr>
             <td class = 'Revenue'>Actual value: {{ actual_value }}€  </td>
         </tr>
-        {% for message in messages %}
-            <p class='err-state'>{{ message }}</p>
     </table>
+    
+    {% for message in messages %}
+        <p class='err-status'>{{ message }}</p>
+    {% endfor %}
 
 {% endblock %}

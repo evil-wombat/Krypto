@@ -31,7 +31,7 @@ def purchase ():
     try:
         form.Coins_from.choices = funciones.coins ()
     except Exception as e:
-        print("**ERROR**🔧: Incorrect Database acces. {} - {}". format(type(e).__name__, e))
+        print("**ERROR**🔧: Incorrect Database access. {} - {}". format(type(e).__name__, e))
         messages.append("Database error.")
         return render_template ('purchase.html', form = form, fix = True, messages = messages)
 
@@ -42,14 +42,14 @@ def purchase ():
             if form.convert.data:
 
                 try:
-                    coin_dic = funciones.suma ()
+                    total = funciones.total_coins_invested ()
                 except Exception as e:
-                    print("**ERROR**🔧: Incorrect Database acces. {} - {}". format(type(e).__name__, e))
-                    messages.append("Database error.")
+                    print("**ERROR**🔧: Incorrect Database access. {} - {}". format(type(e).__name__, e))
+                    messages.append("Database access error.")
 
                     return render_template ('purchase.html', form = form, fix = True, messages = messages)
 
-                if form.Coins_from.data == 'EUR' or form.Q_from.data < coin_dic [form.Coins_from.data]:
+                if (form.Coins_from.data == 'EUR' and form.Coins_from.data != form.Coins_to.data) or (form.Q_from.data < total [form.Coins_from.data]):
 
                     try:
                         form.Q_to.data = API.convert (float (form.Q_from.data), form.Coins_from.data, form.Coins_to.data)
@@ -70,8 +70,17 @@ def purchase ():
                     return render_template ('purchase.html', form = form, fix = True, messages = messages)
 
                 else:
+                    if form.Coins_from.data == form.Coins_to.data:
+
+                        messages.append ('You are trying to exchange the same Coin!!')
+                        return render_template ('purchase.html', form = form, messages = messages)
                     
-                    return render_template ('purchase.html', form = form)                    
+                    elif form.Q_from.data > total [form.Coins_from.data]:
+
+                        messages.append ('You do not have enough coins!!')
+                        return render_template ('purchase.html', form = form, messages = messages)
+                    
+                return render_template ('purchase.html', form = form)                    
           
             elif form.accept.data: 
 
@@ -107,15 +116,17 @@ def status ():
     except Exception as e:
         print("**ERROR**🔧: Incorrect Database acces. {} - {}". format(type(e).__name__, e))
         messages.append("There was an error trying to access the database")
-        return render_template ('status.html', total = invested, actual_value = actual_value, messages = messages)
+        return render_template ('status.html', total = (), actual_value = (), messages = messages)
 
     try:
         actual_value = funciones.actual_value ()
     except Exception as e:
-        print("**ERROR**🔧: Incorrect Database acces. {} - {}". format(type(e).__name__, e))
-        messages.append("Database error.")
-        return render_template ('status.html', total = invested, actual_value = actual_value, messages = messages)
+        print("**ERROR**🔧: Incorrect API access. {} - {}". format(type(e).__name__, e))
+        messages.append("API_KEY error")
 
-    return render_template ('status.html', total = invested, actual_value = actual_value, messages = messages)
+        return render_template ('status.html', total = (), actual_value = (), messages = messages)
+    
+
+    return render_template ('status.html', total = invested, actual_value = actual_value)
 
     

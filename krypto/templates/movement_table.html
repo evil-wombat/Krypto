@@ -7,6 +7,7 @@
     {% for message in messages %}
         <p class='err-msg-mov'>{{ message }}</p>
     {% endfor %}
+    {% if datos|length > 0 %}
         <table class='tabla1'>
                 <tr>
                     <th>Date</th>
@@ -30,5 +31,7 @@
                 </tr>
             {% endfor %}
         </table>
-    
+    {% else %}
+        <p class='movimientos'>There are no movements</p>
+    {% endif %}
 {% endblock %}

@@ -5,11 +5,10 @@ body {
     background-size:cover;
 }
 
-h1, header, h2, h3 {
+h1, header, h2, h3, .movimientos {
     text-align: center;
     display; block;
 }
-
 
 table {
     background-color: black;
@@ -22,6 +21,7 @@ table {
     width: 60%;
     background-color: #EAECEE;
     opacity: 25;
+    text-align: center;
 }
 
 td, th {
@@ -37,6 +37,10 @@ td, th {
     grid-template-columns: repeat(auto-fit, minmax(0%, 1fr));
     margin: auto;
     text-align: center;
+    background: #EAECEE;
+    width: 95%;
+    border: solid 2px black;
+    padding-top: 10px;
 }
 
 .Coin_from {
@@ -153,4 +157,20 @@ footer {
       text-align: center;
       background-color: #EAECEE;
       width: 50%
+  }
+
+  .err-msg, .err-status {
+    color: red;
+    margin: auto;
+    text-align: center;
+    background-color: #EAECEE;
+    width: 50%
+  }
+
+  .movimientos {
+    color: black;
+    margin: auto;
+    text-align: center;
+    background-color: #EAECEE;
+    width: 50%
   }
