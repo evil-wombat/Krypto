@@ -5,4 +5,4 @@ venv/
 krypto/.DS_Store
 config.py
 .vscode
-krypto/data/database.db
+KRYPTOMONEDAS/krypto/data/database.db
