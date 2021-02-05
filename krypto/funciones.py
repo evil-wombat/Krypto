@@ -2,7 +2,6 @@ from krypto import app
 from datetime import date, datetime
 import sqlite3
 from krypto import API
-from collections import Counter
 
 def today ():
     today = date.today ()
@@ -109,7 +108,6 @@ def total_coins_invested ():
 
     return total
 
-
 def invested ():
 
     DBFILE = app.config ['DBFILE']
@@ -138,7 +136,8 @@ def actual_value ():
             actual_value += Q
         elif cantidad ['to_currency'] == 'EUR':
             actual_value -= cantidad ['to_quantity']
-        
+
+
     return actual_value
    
    

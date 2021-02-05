@@ -1,6 +1,6 @@
 
 body {
-    background-image: url('images/fondo.png');
+    background-image: url('images/fondo2.png');
     background-repeat: no-repeat;
     background-size:cover;
 }
@@ -41,6 +41,7 @@ td, th {
     width: 95%;
     border: solid 2px black;
     padding-top: 10px;
+    position: relative;
 }
 
 .Coin_from {
