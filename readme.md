@@ -38,7 +38,7 @@
 
  --> Una vez dentro de la carpeta, ejecutamos el programa sqlite con el siguiente comando: sqlite3 {name_db}.db. Utiliza el mismo nombre que utilizaste en el archivo config.py
 
- --> Una vez ejecutado el mandato ya estarás dentro de sqlite. A continuación ejecuta .read/migrations/initial.sql
+ --> Una vez ejecutado el mandato ya estarás dentro de sqlite. A continuación ejecuta .read migrations/initial.sql
 
  --> Como comprobación para ver que se ha creado nuestra nueva base de datos podemos ejecutar los mandatos .table, donde te mostrára el nombre de la tabla creado o .schema donde te mostrará la secuencia ejecutada por SQL.
 
