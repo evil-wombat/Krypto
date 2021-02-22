@@ -125,20 +125,14 @@ def invested ():
 
 def actual_value ():
 
-    DBFILE = app.config ['DBFILE']
+    total = total_coins_invested ()
 
-    movements = consulta ('SELECT date, time, from_currency, from_quantity, to_currency, to_quantity FROM movements;')
-    
     actual_value = 0
-    for cantidad in movements:
-        if cantidad ['to_currency'] != 'EUR':
-            Q = API.convert (cantidad ['to_quantity'], cantidad ['to_currency'], 'EUR')
-            actual_value += Q
-        elif cantidad ['to_currency'] == 'EUR':
-            actual_value -= cantidad ['to_quantity']
-
-
-    return actual_value
+    for k, v in total.items():
+        if k != 'EUR':
+            actual_value += API.convert (v, k, 'EUR')
+        
+    return (actual_value)
    
    
 

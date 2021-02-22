@@ -12,6 +12,9 @@
         <tr>
             <td class = 'Revenue'>Actual value: {{ actual_value }}€  </td>
         </tr>
+        <tr>
+            <td class = 'State'>Investment State: {{ actual_value - total }}</td>
+        </tr>
     </table>
     
     {% for message in messages %}

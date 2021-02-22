@@ -9,7 +9,7 @@ class Forms (FlaskForm):
 
     Coins_from = SelectField ('From', validators=[DataRequired()])
     C_from_oculto = HiddenField ()
-    Q_from = FloatField ('Q', validators=[DataRequired(message='Q must be a number higher than 0.1'), NumberRange (min=0.1, message='minimum value must be 0.1')])
+    Q_from = FloatField ('Q', validators=[DataRequired(message='Q must be a number higher than 0.000001'), NumberRange (min=0.1, message='minimum value must be 0.1')])
     Q_from_oculto = HiddenField ()
     Coins_to = SelectField ('To', choices=coin_list, validators=[DataRequired()])
     C_to_oculto = HiddenField ()
